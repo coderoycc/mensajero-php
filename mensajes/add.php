@@ -1,8 +1,8 @@
 <?php
 session_start();
-if(!isset($_SESSION['nombre']) && !isset($_SESSION['rol']) && !isset($_SESSION['id'])){
+if (!isset($_SESSION['nombre']) && !isset($_SESSION['rol']) && !isset($_SESSION['id'])) {
   header('Location: ../');
-}else{
+} else {
   $nombre = $_SESSION['nombre'];
   $id = $_SESSION['id'];
   $rol = $_SESSION['rol'];
@@ -14,16 +14,16 @@ $fecha_consulta = date('d-m-Y');
 $hora_consulta = date('H:i:s');
 $nid = 0;
 $opciones = '';
-if(isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0){
+if (isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0) {
   $nid = $_GET['nid'];
   $stmt = sqlsrv_query($con, "SELECT idUsuario, nombres FROM tblUsuario WHERE idUsuario = $nid;");
-  if($stmt && sqlsrv_has_rows($stmt) > 0){
+  if ($stmt && sqlsrv_has_rows($stmt) > 0) {
     $row = sqlsrv_fetch_array($stmt);
-  }else{
+  } else {
     include_once('../views/error.php');
     die();
   }
-}else{
+} else {
   include_once('../views/error.php');
   die();
 }
@@ -38,8 +38,7 @@ if(isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0){
   <title>Nuevo mensaje</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/x-icon">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
@@ -73,7 +72,7 @@ if(isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0){
 
       <section class="content">
         <form id="add_cita">
-          <input type="hidden" name="idUsuario" value="<?= $id?>">
+          <input type="hidden" name="idUsuario" value="<?= $id ?>">
           <div class="card card-info">
             <div class="card-header">
               <h3 class="card-title ">Registro del mensaje</h3>
@@ -88,8 +87,8 @@ if(isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0){
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label>Usuario: </label>
-                    <input type="text" class="form-control" value="<?=$row['nombres']?>" disabled>
-                    <input type="hidden" name="idDestino" value="<?= $nid?>">
+                    <input type="text" class="form-control" value="<?= $row['nombres'] ?>" disabled>
+                    <input type="hidden" name="idDestino" value="<?= $nid ?>">
                   </div>
                 </div>
                 <div class="col-sm-6">
@@ -104,10 +103,18 @@ if(isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0){
                 <div class="col-sm-3">
                   <div class="form-group">
                     <label>Fecha:</label>
-                    <div class="input-group date" id="fecha" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#fecha" name="fecha"/>
-                      <div class="input-group-append" data-target="#fecha" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    <div class="flex-row">
+                      <div class="input-group date" id="fecha" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#fecha" name="fecha" />
+                        <div class="input-group-append" data-target="#fecha" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkDiaAntes" name="checkDiaAntes">
+                        <label class="form-check-label" for="checkDiaAntes">
+                          Recordame un día antes
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -116,10 +123,16 @@ if(isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0){
                   <div class="form-group">
                     <label>Hora envío:</label>
                     <div class="input-group date" id="horaInicio" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#horaInicio" name="hora"/>
+                      <input type="text" class="form-control datetimepicker-input" data-target="#horaInicio" name="hora" />
                       <div class="input-group-append" data-target="#horaInicio" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="checkHoraAntes" name="checkHoraAntes">
+                      <label class="form-check-label" for="checkHoraAntes">
+                        Recordame una hora antes
+                      </label>
                     </div>
                   </div>
                 </div>
