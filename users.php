@@ -1,6 +1,9 @@
 <?php
 session_start();
 $root = './';
+if(!isset($_SESSION['id'])){
+  header('Location: ./');
+}
 $nombre = $_SESSION['nombre'];
 $id = $_SESSION['id'];
 $rol = $_SESSION['rol'];

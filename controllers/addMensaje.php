@@ -1,8 +1,7 @@
 <?php
 
 include('../conexion.php');
-$fecha = explode("/", $_POST['fecha']);
-$fecha_format = $fecha[2]."-".$fecha[1]."-".$fecha[0];
+$fecha_format = $_POST['fecha'];
 
 $sql = "INSERT INTO tblMensaje(mensaje, fecha, color, hora, idUsuarioOrigen, idUsuarioDestino)
 VALUES (?,?,?,?,?,?)";

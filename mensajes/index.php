@@ -24,6 +24,20 @@ $root = '../';
   <link rel="stylesheet" href="../plugins/fullcalendar/main.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <style>
+    .toast-center {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    div.fc-daygrid-event-harness{
+      cursor: pointer !important;
+    }
+    div.fc-timegrid-event-harness.fc-timegrid-event-harness-inset{
+      cursor:pointer;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <input type="hidden" value="<?=$id?>" id="id_user">

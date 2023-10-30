@@ -33,7 +33,23 @@ $(document).ready(async function () {
       //Random default events
       events: citas,
       editable: false,
-      droppable: false
+      droppable: false,
+      eventClick: function(info) {
+        $('.toast').remove();
+        var eventObj = info.event;
+        let hora = info.event.start
+        hora = `${hora.getHours()>9?'':'0'}${hora.getHours()}:${hora.getMinutes()>9?'':'0'}${hora.getMinutes()}`
+        $(document).Toasts('create', {
+          title: 'Detalles del mensaje programado',
+          autohide: true,
+          icon: 'fas fa-clock',
+          delay: 2900,
+          class:'bg-primary toast-center',
+          body: '<b>Mensaje:</b> '+eventObj.title+'<br>'+'<b>hora:</b> '+hora,
+          closePrevious: true
+        })
+        
+      },
     });
   
     calendar.render();

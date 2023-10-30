@@ -105,8 +105,8 @@ if (isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0) {
                     <label>Fecha:</label>
                     <div class="flex-row">
                       <div class="input-group date" id="fecha" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" data-target="#fecha" name="fecha" />
-                        <div class="input-group-append" data-target="#fecha" data-toggle="datetimepicker">
+                        <input type="date" class="form-control" name="fecha" />
+                        <div class="input-group-append">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                       </div>

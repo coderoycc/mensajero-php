@@ -103,7 +103,7 @@ $nombrePac = sqlsrv_fetch_array($stmtName)['nombres'];
                 $fecha = date_format($row['fecha'], 'd/m/Y');
               ?>
               <tr>
-                <td><?=$fecha?> - <?=$row['hora']?></td>
+                <td><?=$fecha?> - <?=date('H:i', strtotime($row['hora']->format('H:i')))?></td>
                 <td><?=$row['mensaje'];?></td>
                 <td><?=$row['estado'];?></td>
               </tr>

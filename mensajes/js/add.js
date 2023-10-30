@@ -1,7 +1,7 @@
 $(document).ready(function () {
-  $('#fecha').datetimepicker({
-    format: 'DD/MM/YYYY',
-  });
+  // $('#fecha').datetimepicker({
+  //   format: 'DD/MM/YYYY',
+  // });
   $('#horaInicio').datetimepicker({
     format:'HH:mm',
     minTime: '04:00',
