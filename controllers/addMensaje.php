@@ -16,7 +16,7 @@ if($stmt){
   
   if (isset($_POST['checkDiaAntes']) && isset($_POST['checkHoraAntes'])) {
     $fecha2 = $_POST['fecha'];
-    $fechaObj = DateTime::createFromFormat('d/m/Y', $fecha2);
+    $fechaObj = DateTime::createFromFormat('Y-m-d', $fecha2);
     $fechaObj->modify('-1 day');
     $fechaUnDiaAntes = $fechaObj->format('Y-m-d');
     $horaUnahoraAntes = $_POST['hora'];
@@ -35,7 +35,7 @@ if($stmt){
 
   } else if (isset($_POST['checkDiaAntes']) && !isset($_POST['checkHoraAntes'])) {
     $fecha2 = $_POST['fecha'];
-    $fechaObj = DateTime::createFromFormat('d/m/Y', $fecha2);
+    $fechaObj = DateTime::createFromFormat('Y-m-d', $fecha2);
     $fechaObj->modify('-1 day');
     $fechaUnDiaAntes = $fechaObj->format('Y-m-d');
     $horaUnahoraAntes = $_POST['hora'];
