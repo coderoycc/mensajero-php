@@ -46,7 +46,7 @@ async function peticionForms(accion, formData, servicio){
     success: function (response) {
       if (response.code) {
         show_toast(accion, response.message, "bg-success");
-        setTimeout(()=>window.location.href = "./", 1700);
+        // setTimeout(()=>window.location.href = "./", 1700);
       } else {
         show_toast(accion, response.message, "bg-danger");
       }

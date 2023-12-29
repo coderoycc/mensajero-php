@@ -104,12 +104,13 @@ if (isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0) {
                   <div class="form-group">
                     <label>Fecha:</label>
                     <div class="flex-row">
-                      <div class="input-group date" id="fecha" data-target-input="nearest">
-                        <input type="date" class="form-control" name="fecha" />
+                      <div class="input-group date" data-target-input="nearest">
+                        <input type="date" class="form-control" name="fecha" id="fecha"/>
                         <div class="input-group-append">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                       </div>
+                      <br>
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="checkDiaAntes" name="checkDiaAntes">
                         <label class="form-check-label" for="checkDiaAntes">
@@ -123,11 +124,12 @@ if (isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0) {
                   <div class="form-group">
                     <label>Hora envío:</label>
                     <div class="input-group date" id="horaInicio" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#horaInicio" name="hora" />
+                      <input type="text" class="form-control datetimepicker-input" id="hora" data-target="#horaInicio" name="hora" required/>
                       <div class="input-group-append" data-target="#horaInicio" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="far fa-clock"></i></div>
                       </div>
                     </div>
+                    <br>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="checkHoraAntes" name="checkHoraAntes">
                       <label class="form-check-label" for="checkHoraAntes">

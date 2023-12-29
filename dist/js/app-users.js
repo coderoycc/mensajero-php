@@ -83,7 +83,8 @@ async function agregarUsuario(){
   const res = await peticion('./controllers/agregarUsuario.php', data)
   if(res.ok){
     mensajeSwal('Usuario agregado', 'success')
-    setTimeout(() => {window.location.reload();}, 1500)
+    
+    // setTimeout(() => {window.location.reload();}, 1500)
   }else{
     mensajeSwal('Ocurrio un error', 'error')
     console.log(res)

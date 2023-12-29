@@ -163,6 +163,37 @@ if($stmt === false) {
     });
   </script>
   <script src="dist/js/app-users.js"></script>
+  <script src="dist/js/socket.io.js"></script>
+  <script>
+    let connected = false;
+    const socket = io("http://localhost:3000", {
+      cors: {
+        origin: "http://localhost:80",
+        methods: ["GET", "POST"],
+        credentials: true,
+      },
+    });
+    socket.on('connect', function() {
+      console.log(socket)
+      if(!connected){
+        console.log('Conectado al servidor');
+        socket.emit('join', 'guibdental');
+        socket.emit('getNotify', 'guibdental,0');
+        socket.on('notifications', function(data) {
+          console.log('datos de notificacion ',data)
+        })
+        socket.on('message', function(data) {
+          console.log('MENSAJE: ',data)
+        })
+        connected = true;
+      }
+    });
+    
+    socket.on('disconnect', function() {
+      console.log('Desconectado del servidor');
+      connected = false;
+    })
+  </script>
 </body>
 
 </html>
