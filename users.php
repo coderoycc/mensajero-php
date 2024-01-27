@@ -90,9 +90,10 @@ if($stmt === false) {
               <tbody>
               <?php
               while($row = sqlsrv_fetch_array($stmt)){
+                $classRow = $row['idUsuario'] == $id ? 'table-success' : '';
               ?>
-              <tr>
-                <td><?=$row['nombres'];?></td>
+              <tr class="<?=$classRow?>">
+                <td><?=($row['nombres'] == $nombre) ? 'TÚ - '.$row['nombres']:$row['nombres'];?></td>
                 <td><?=$row['rol'];?></td>
                 <td><?=$row['celular'];?></td>
                 <td>

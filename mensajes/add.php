@@ -105,7 +105,7 @@ if (isset($_GET['nid']) && $_GET['nid'] != '' && $_GET['nid'] != 0) {
                     <label>Fecha:</label>
                     <div class="flex-row">
                       <div class="input-group date" data-target-input="nearest">
-                        <input type="date" class="form-control" name="fecha" id="fecha"/>
+                        <input type="date" class="form-control" name="fecha" id="fecha" value="<?=date('Y-m-d')?>"/>
                         <div class="input-group-append">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>

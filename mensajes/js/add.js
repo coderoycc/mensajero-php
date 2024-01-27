@@ -59,13 +59,15 @@ $(document).on('change', '#fecha', (e) => {
   hoy.setHours(0, 0, 0, 0);
   console.log(hoy, fecha)
   if (fecha.getTime() < hoy.getTime()) {
-    Swal.fire({
-      icon: 'error',
-      title: 'La fecha no puede ser menor a la fecha actual',
-      showConfirmButton: false,
-      timer: 1500
+    $(document).Toasts('create', {
+      title: 'Fecha fuera de rango',
+      autohide: true,
+      icon: 'fas fa-calendar',
+      delay: 2200,
+      class:'bg-danger',
+      closePrevious: true
     })
-    $('#fecha').val('');
+    validateForm = false;
   } else {
     validateForm = true;
     $("#checkDiaAntes").attr('disabled', false)
