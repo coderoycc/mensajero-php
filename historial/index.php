@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/La_Paz');
 if(!isset($_GET['nid'])){
   header('Location: ../');
   die();
@@ -15,10 +16,11 @@ $root = '../';
 include_once('../conexion.php');
 
 $idUsuario = $_GET['nid'];
-$sql = "SELECT * FROM tblMensaje
-WHERE idUsuarioDestino = $idUsuario 
-AND idUsuarioOrigen = $id
-ORDER BY fecha DESC";
+$sql = "SELECT tm.*, tr.idRecordatorio, tr.fecha as fechar, tr.hora as horar FROM tblMensaje tm
+LEFT JOIN tblRecordatorio tr ON tm.idMensaje = tr.idMensaje
+WHERE tm.idUsuarioDestino = $idUsuario
+AND tm.idUsuarioOrigen = $id
+ORDER BY tm.fecha DESC";
 $stmt = sqlsrv_query($con, $sql);
 $stmtName = sqlsrv_query($con, "SELECT nombres FROM tblUsuario WHERE idUsuario = $idUsuario");
 if($stmt === false || $stmtName === false){
@@ -91,21 +93,36 @@ $nombrePac = sqlsrv_fetch_array($stmtName)['nombres'];
           <div class="card-body">
             <table id="table_historial" class="table table-bordered table-striped">
               <thead>
-              <tr>
+              <tr class="text-center">
                 <th>FECHA - HORA</th>
                 <th>MENSAJE</th>
+                <th>RECORDAR FECHA - HORA</th>
                 <th>ESTADO</th>
+                <th>ELIMINAR</th>
               </tr>
               </thead>
               <tbody>
               <?php
               while($row = sqlsrv_fetch_array($stmt)){
                 $fecha = date_format($row['fecha'], 'd/m/Y');
+                $now = new DateTime();
+                $caso = 0;
+                if($now->format('Y-m-d') == $row['fecha']->format('Y-m-d')){//es hoy
+                  $now->add(new DateInterval('PT1H'));
+                  if($now->format('H:i') > $row['hora']->format('H:i')){
+                    $caso = 1; // posible que el mensaje pueda ser enviado
+                  }
+                }
+                $recordar = $row['idRecordatorio'] ? $row['fechar']->format('d/m/Y').' '.$row['horar']->format('H:i') : 'NO';
               ?>
               <tr>
                 <td><?=$fecha?> - <?=date('H:i', strtotime($row['hora']->format('H:i')))?></td>
                 <td><?=$row['mensaje'];?></td>
+                <td><?=$recordar?></td>
                 <td><?=$row['estado'];?></td>
+                <td class="text-center">
+                  <button type="button" class="btn rounded-circle btn-danger shadow" data-idmensaje="<?=$row['idMensaje']?>" data-caso="<?=$caso?>" data-toggle="modal" data-target="#modal_eliminar_msg"><i class="fa fa-trash"></i></button>
+                </td>
               </tr>
               <?php
               }?>
@@ -130,6 +147,7 @@ $nombrePac = sqlsrv_fetch_array($stmtName)['nombres'];
   </div>
   <!-- ./wrapper -->
 
+  <?php include('modals.php');?>
   <!-- jQuery -->
   <script src="../plugins/jquery/jquery.min.js"></script>
   <script src="../common/js/common.js"></script>

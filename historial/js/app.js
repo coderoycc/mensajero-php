@@ -14,75 +14,49 @@ $("#talla").on('change', function () {
     calcular_imc($("#peso").val(), $("#talla").val());
   } 
 })
-function calcular_imc(peso, talla) {
-  var tallam = parseInt(talla);
-  tallam = tallam / 100;
-  var imc = peso / (tallam * tallam)
-  // console.log(imc);
-  imc = imc.toFixed(2);
-  if (imc < 18.5) {
-    $("#imc_info").html(contentIMC(imc, 'danger', 'Muy bajo de lo normal'));
-  } else if (imc >= 18.5 && imc <= 24.9) {
-    $("#imc_info").html(contentIMC(imc, 'success', 'Valores normales para el peso y talla'))
-  } else if (imc >= 25 && imc <= 29.9) {
-    $("#imc_info").html(contentIMC(imc, 'warning', 'Sobrepeso'))
-  } else if (imc >= 30) {
-    $("#imc_info").html(contentIMC(imc, 'danger', 'Obesidad'));
+
+
+$(document).on('show.bs.modal', '#modal_eliminar_msg', (e) => {
+  const caso = e.relatedTarget.dataset.caso;
+  const idMensaje = e.relatedTarget.dataset.idmensaje;
+  console.log(caso, idMensaje)
+  $("#modal_idmsj").val(idMensaje);
+  const msg = caso == '0' ? 'El mensaje se eliminará' : 'Solicitud fuera de plazo, puede que el mensaje aún se envie';
+  const cadena = `<i class="fa fa-comment-dots"></i> ${msg}`;
+  $('#msg_notificacion').html(cadena);
+})
+$(document).on('hide.bs.modal', '#modal_eliminar_msg', () => {
+  setTimeout(() => {
+    $("#modal_idmsj").val(0);
+    $('#msg_notificacion').html('');
+  }, 900);
+})
+
+async function eliminar(){
+  const res = await $.ajax({
+    url: 'deletemsg.php',
+    type: 'POST',
+    data: {idMensaje: $("#modal_idmsj").val()},
+    dataType: 'JSON'
+  });
+  if(res.status == 'success'){
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Mensaje eliminado",
+      showConfirmButton: false,
+      timer: 1300
+    });
+    setTimeout(() => {
+      location.reload();
+    }, 1330);
+  }else{
+    Swal.fire({
+      position: "top-end",
+      icon: "danger",
+      title: "Ocurrió un error al eliminar",
+      showConfirmButton: false,
+      timer: 1400
+    });
   }
-}
-
-function contentIMC(imc, color, mensaje){
-  return `
-  <div class="alert alert-${color} alert-dismissible" style="max-width: 350px;margin: 0 auto;">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <h5><i class="icon fas fa-exclamation-triangle"></i> <b>IMC: &nbsp;&nbsp;${imc}</b> </h5>
-    <h6> Estado: <b>${mensaje}</b></h6>
-  </div>
-  `;
-}
-
-function imprimirReceta(idConsulta){
-  var form = document.createElement("form");
-  form.setAttribute("method", "post")
-  form.setAttribute("action", "../filesGenerate/receta.php")
-  form.setAttribute("target", "_blank")
-  form.innerHTML = `
-    <input type="hidden" name="idConsulta" value="${idConsulta}">
-  `;
-  document.body.appendChild(form);
-  form.submit();
-  form.remove();
-}
-
-function enviarDatos(e){
-  e.preventDefault();
-  const formData = $("#edit_consulta").serialize();
-  console.log(formData);
-  // $.ajax({
-  //   data: formData,
-  //   url: "../controllers/editConsulta.php",
-  //   type: "POST",
-  //   dataType: "JSON",
-  //   success: function (response) {
-  //     if(response.ok){
-  //       Swal.fire({
-  //         icon:'success',
-  //         title: 'Se guardaron los cambios',
-  //         showConfirmButton: false,
-  //         timer: 1300
-  //       })
-  //       setTimeout(()=>{window.location.href = "../pacientes/"},1700);
-  //     }else{
-  //       Swal.fire({
-  //         icon:'error',
-  //         title: 'Ocurrio un error',
-  //         showConfirmButton: false,
-  //         timer: 1300
-  //       })
-  //     }
-  //   },
-  //   error: function (response) {
-  //     console.log(response)
-  //   }
-  // })
 }

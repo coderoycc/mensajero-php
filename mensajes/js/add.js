@@ -1,4 +1,5 @@
 let validateForm = false;
+let es_hoy = true;
 $(document).ready(function () {
   $('#horaInicio').datetimepicker({
     format: 'HH:mm',
@@ -15,6 +16,7 @@ $(document).ready(function () {
   $("#add_cita").submit((e) => {
     e.preventDefault();
     if (!validateForm) {
+      $("#btn-registrar").attr('disabled', true)
       return;
     }
     const data = $("#add_cita").serialize();
@@ -75,46 +77,47 @@ $(document).on('change', '#fecha', (e) => {
 
   // verificamos si es hoy
   if (esHoy(hoy, fecha)) {
+    es_hoy = true;
     // dehabilitamos recordatorio de un dia antes
     $("#checkDiaAntes").prop('checked', false)
     $("#checkDiaAntes").attr('disabled', true)
+  }else{
+    es_hoy = false;
   }
 
 })
 $(document).on('input', '#hora', (e) => {
   const hora = e.target.value.split(':');
   const horaActual = new Date();
-  const fecha = $("#fecha").val() != '' ? new Date($("#fecha").val()) : new Date(); 
-  fecha.setDate(fecha.getDate() + 1);
-  const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0);
   if (hora.length > 1 && hora[1] != '') {
-    if(esHoy(hoy, fecha)){
+    if(es_hoy){
       console.log('es hoy')
-      if(horaActual.getHours() > parseInt(hora[0])){
+      let diferenciaMin = (parseInt(hora[0]) - horaActual.getHours()) * 60;
+      if(diferenciaMin <= 0){
         $(document).Toasts('create', {
           title: 'Hora fuera de rango',
           autohide: true,
           icon: 'fas fa-clock',
-          delay: 2900,
+          delay: 2000,
           class:'bg-danger',
-          body: 'La hora no puede se menor a la actual',
-          closePrevious: true
-        })
-        validateForm = false;
-      }else if(horaActual.getHours() == parseInt(hora[0]) && horaActual.getMinutes() > parseInt(hora[1])){
-        $(document).Toasts('create', {
-          title: 'Hora fuera de rango',
-          autohide: true,
-          icon: 'fas fa-clock',
-          delay: 2900,
-          class:'bg-danger',
-          body: 'La hora no puede ser mejor a la actual',
-          closePrevious: true
-        })
+          body:'Ponga una hora mayor',
+          closePrevious: true,
+        });
         validateForm = false;
       }else{
-        validateForm = true;
+        diferenciaMin = diferenciaMin + (parseInt(hora[1]) - horaActual.getMinutes())
+        if(diferenciaMin <= 60){
+          $(document).Toasts('create', {
+            title: 'Hora fuera de rango',
+            autohide: true,
+            icon: 'fas fa-clock',
+            delay: 1900,
+            class:'bg-danger',
+            body:'Ponga una hora mayor',
+            closePrevious: true
+          })
+          validateForm = false;
+        }else {validateForm = true;}
       }
       // la hora es una hora menor a la hora actual
       console.log(horaActual.getHours() - 1, parseInt(hora[0]))
